@@ -63,12 +63,12 @@ function triangle(x1, y1, x2, y2, x3, y3, mode) {
 }
 
 // Text
-function text(message, x, y, mode) {
-   if (mode === "fill") {
-     ctx.fillText(message, x, y);
-   } else if (mode === "stroke") {
-     ctx.strokeText(message, x, y, 50);
-   }
+function text(message, x, y, maxWidth, mode) {
+  if (mode === "fill") {
+    ctx.fillText(message, x, y, maxWidth);
+  } else if (mode === "stroke") {
+    ctx.strokeText(message, x, y, maxWidth);
+  }
 }
 
 // Ellipse

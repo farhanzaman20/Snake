@@ -57,3 +57,19 @@ function drawFood() {
   rect(food.x, food.y, 10, 10, 'fill');
   rect(food.x, food.y, 10, 10, 'stroke');
 }
+
+function playerMove (event) {
+  if (event.key == 'ArrowLeft' && dx == !10) {
+    dx = -10;
+    dy = 0;
+  } else if (event.key == 'ArrowUp' && dy == !10) {
+    dy = -10;
+    dx = 0;
+  } else if (event.key == 'ArrowRight' && dx == !-10) {
+    dx = 10;
+    dy = 0;
+  } else if (event.key == 'ArrowDown' && dy == !-10) {
+    dy = 10;
+    dx = 0;
+  }
+}
