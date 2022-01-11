@@ -1,6 +1,5 @@
 // Common Elements
 const htmlMain = document.querySelector('main');
-const difficultyOpt = document.querySelector('#difficulty');
 
 // Canvas Setup
 cnv = document.getElementById("my-canvas");
@@ -11,7 +10,8 @@ cnv.height = 400;
 createStartMenu();
 
 // Game Variables
-var score, dx, dy, gameSpeed, amount;
+var score, dx, dy, amount;
+var gameSpeed = 80
 var gameState = 'menu';
 document.getElementById('highscore').innerHTML = localStorage.getItem('highScore');
 
@@ -24,7 +24,6 @@ function startGame() {
   document.getElementById('score').innerHTML = 0;
   gameState = 'game';
   createSnake();
-  gameSpeed = difficultyOpt.value;
   if (gameSpeed == 100) {
     amount = 5;
   } else if (gameSpeed == 80) {
@@ -55,8 +54,13 @@ function gameLoop() {
 
 document.addEventListener('keydown', function (event) {
   if (gameState == 'menu') {
-    mainMenu.nav(event);
-    mainMenu.select(event)
+    if (currentMenu == 'main') {
+      mainMenu.nav(event)
+    } else if (currentMenu == 'options') {
+      optionsMenu.nav(event)
+    } else if (currentMenu == 'mode') {
+      modeMenu.nav(event)
+    }
   } else if (gameState == 'game') {
     playerMove(event);
   }
@@ -77,8 +81,6 @@ function gameOverCheck() {
 function gameOver() {
   console.log('Game Over');
   htmlMain.innerHTML = '<p>Game Over<br>Press any button to play again</p>';
-  document.addEventListener('keydown', mainKeydownHandler);
-
   highScoreCheck();
 }
 
