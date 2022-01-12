@@ -1,55 +1,58 @@
 // Common Elements
-const htmlMain = document.querySelector('main');
+const htmlMain = document.querySelector('main')
 
 // Canvas Setup
-cnv = document.getElementById("my-canvas");
-ctx = cnv.getContext("2d");
-cnv.width = 400;
-cnv.height = 400;
+cnv = document.getElementById("my-canvas")
+ctx = cnv.getContext("2d")
+cnv.width = 400
+cnv.height = 400
 
-createStartMenu();
+createStartMenu()
 
 // Game Variables
-var score, dx, dy, amount;
+var score, dx, dy, amount
 var gameSpeed = 80
-var gameState = 'menu';
-document.getElementById('highscore').innerHTML = localStorage.getItem('highScore');
+var gameState = 'menu'
+if (localStorage.getItem('highScoer') == undefined) {
+  localStorage.setItem('highScore', 0)
+}
+document.getElementById('highscore').innerHTML = localStorage.getItem('highScore')
 
 // Start Game Function
 function startGame() {
   // Game Variables
-  dx = 10;
-  dy = 0;
-  score = 0;
-  document.getElementById('score').innerHTML = 0;
-  gameState = 'game';
-  createSnake();
+  dx = 10
+  dy = 0
+  score = 0
+  document.getElementById('score').innerHTML = 0
+  gameState = 'game'
+  createSnake()
   if (gameSpeed == 100) {
-    amount = 5;
+    amount = 5
   } else if (gameSpeed == 80) {
-    amount = 10;
+    amount = 10
   } else if (gameSpeed == 60) {
-    amount = 15;
+    amount = 15
   } else if (gameSpeed == 40) {
-    amount = 20;
+    amount = 20
   }
 
   // Game Loop
-  gameLoop();
+  gameLoop()
 }
 
 function gameLoop() {
   if (gameOverCheck()) {
-    gameOver();
-    return;
-  };
+    gameOver()
+    return
+  }
   setTimeout(function () {
-    background('white');
-    moveSnake(0, 10);
-    drawFood();
-    drawSnake();
-    gameLoop();
-  }, gameSpeed);
+    background('white')
+    moveSnake(0, 10)
+    drawFood()
+    drawSnake()
+    gameLoop()
+  }, gameSpeed)
 }
 
 document.addEventListener('keydown', function (event) {
@@ -60,9 +63,11 @@ document.addEventListener('keydown', function (event) {
       optionsMenu.nav(event)
     } else if (currentMenu == 'mode') {
       modeMenu.nav(event)
+    } else if (currentMenu == 'snake') {
+      snakeMenu.nav(event)
     }
   } else if (gameState == 'game') {
-    playerMove(event);
+    playerMove(event)
   }
 })
 
@@ -79,16 +84,16 @@ function gameOverCheck() {
 }
 
 function gameOver() {
-  console.log('Game Over');
-  htmlMain.innerHTML = '<p>Game Over<br>Press any button to play again</p>';
-  highScoreCheck();
+  console.log('Game Over')
+  htmlMain.innerHTML = '<p>Game Over<br>Press any button to play again</p>'
+  highScoreCheck()
 }
 
 function highScoreCheck() {
-  console.log(score);
+  console.log(score)
   if (localStorage.getItem('highScore') < score) {
-    console.log('New high score');
-    localStorage.setItem('highScore', score);
-    document.getElementById('highscore').innerHTML = localStorage.getItem('highScore');
+    console.log('New high score')
+    localStorage.setItem('highScore', score)
+    document.getElementById('highscore').innerHTML = localStorage.getItem('highScore')
   }
 }
