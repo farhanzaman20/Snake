@@ -1,19 +1,19 @@
-// Common Elements
-const htmlMain = document.querySelector('main')
-
 // Canvas Setup
 cnv = document.getElementById("my-canvas")
 ctx = cnv.getContext("2d")
 cnv.width = 400
 cnv.height = 400
 
+if (localStorage.getItem('theme') == 'dark') {
+  lightToDark()
+}
 createStartMenu()
 
 // Game Variables
 var score, dx, dy, amount
 var gameSpeed = 80
 var gameState = 'menu'
-if (localStorage.getItem('highScoer') == undefined) {
+if (localStorage.getItem('highScore') == undefined) {
   localStorage.setItem('highScore', 0)
 }
 document.getElementById('highscore').innerHTML = localStorage.getItem('highScore')
@@ -47,7 +47,7 @@ function gameLoop() {
     return
   }
   setTimeout(function () {
-    background('white')
+    background(backCol)
     moveSnake(0, 10)
     drawFood()
     drawSnake()
@@ -59,6 +59,8 @@ document.addEventListener('keydown', function (event) {
   if (gameState == 'menu') {
     if (currentMenu == 'main') {
       mainMenu.nav(event)
+    } else if (currentMenu == 'main2') {
+      mainMenu2.nav(event)
     } else if (currentMenu == 'options') {
       optionsMenu.nav(event)
     } else if (currentMenu == 'mode') {
@@ -85,8 +87,9 @@ function gameOverCheck() {
 
 function gameOver() {
   console.log('Game Over')
-  htmlMain.innerHTML = '<p>Game Over<br>Press any button to play again</p>'
   highScoreCheck()
+  createPlayAgainMenu()
+  gameState = 'menu'
 }
 
 function highScoreCheck() {

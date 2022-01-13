@@ -1,5 +1,5 @@
 // Snake Object
-var snakeHeadCol = ['darkgrey', 'black']
+var snakeHeadCol = 'darkgrey'
 var snakeCol = ['lightgrey', 'grey']
 
 var snake
@@ -24,8 +24,8 @@ function drawSnake() {
   for (let i = 1; i < snake.length; i++) {
     drawSnakePart(snake[i])
   }
-  fill(snakeHeadCol[0])
-  stroke(snakeHeadCol[1])
+  fill(snakeHeadCol)
+  stroke('black')
   rect(snake[0].x, snake[0].y, 10, 10, 'fill')
   rect(snake[0].x, snake[0].y, 10, 10, 'stroke')
 }

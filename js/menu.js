@@ -21,7 +21,7 @@ var mainMenu = {
   },
 
   draw: function(col1, col2) {
-    background('white')
+    background(backCol)
     ctx.textAlign = "center"
     font('20px Arial')
     fill(col1)
@@ -30,6 +30,39 @@ var mainMenu = {
     text('Game Options', 200, 225, 200, 'fill')
   }
 }
+
+var mainMenu2 = {
+  selected: 'start',
+
+  nav: function(event) {
+    if (event.key == 'ArrowDown' && this.selected == 'start') {
+      this.draw(textCol[0], textCol[1])
+      this.selected = 'options'
+    } else if (event.key == 'ArrowUp' && this.selected == 'options') {
+      this.draw(textCol[1], textCol[0])
+      this.selected = 'start'
+    } else if (event.key == 'Enter') {
+      if (this.selected == 'start') {
+        startGame()
+      } else if (this.selected == 'options') {
+        currentMenu = 'options'
+        optionsMenu.selected = 'mode'
+        optionsMenu.draw(textCol[1], textCol[0], textCol[0], textCol[0], textCol[0])
+      }
+    }
+  },
+
+  draw: function(col1, col2) {
+    background(backCol)
+    ctx.textAlign = "center"
+    font('20px Arial')
+    fill(col1)
+    text('Play Again', 200, 175, 200, 'fill')
+    fill(col2)
+    text('Game Options', 200, 225, 200, 'fill')
+  }
+}
+
 
 // Options Menu
 var optionsMenu = {
@@ -91,9 +124,15 @@ var optionsMenu = {
         snakeMenu.drawText(textCol[1], textCol[0])
         snakeMenu.drawColors()
       } else if (this.selected == 'theme') {
-        
+        if (theme == 'light') {
+          lightToDark()
+        } else if (theme == 'dark') {
+          darkToLight()
+        }
+        optionsMenu.draw(textCol[0], textCol[0], textCol[1], textCol[0], textCol[0])
       } else if (this.selected == 'reset') {
-        
+        localStorage.setItem('highScore', 0)
+        document.getElementById('highscore').innerHTML = localStorage.getItem('highScore')
       } else if (this.selected == 'back') {
         currentMenu = 'main'
         mainMenu.draw(textCol[0], textCol[1])
@@ -105,13 +144,13 @@ var optionsMenu = {
   }, 
 
   draw: function(col1, col2, col3, col4, col5) {
-    background('white')
+    background(backCol)
     fill(col1)
     text('Difficulty', 200, 150, 200, 'fill')
     fill(col2)
     text('Snake', 200, 180, 200, 'fill')
     fill(col3)
-    text('Theme', 200, 210, 200, 'fill')
+    text('Toggle Dark Mode', 200, 210, 200, 'fill')
     fill(col4)
     text('Reset High Score', 200, 240, 200, 'fill')
     fill(col5)
@@ -165,7 +204,7 @@ var modeMenu = {
   },
 
   draw: function(col1, col2, col3, col4) {
-    background('white')
+    background(backCol)
     fill(col1)
     text('Easy', 200, 150, 200, 'fill')
     fill(col2)
@@ -179,7 +218,6 @@ var modeMenu = {
 
 // Snake Menu
 var snakeMenu = {
-  // Choices: head col, body col
   headCols: ['grey', 'blue', 'red', 'green'],
   selHeadCol: 0,
   bodyCols: ['grey', 'blue', 'red', 'green'],
@@ -267,7 +305,7 @@ var snakeMenu = {
   },
 
   drawText: function(col1, col2) {
-    background('white')
+    background(backCol)
     fill(col1)
     text('Head Color', 200, 175, 200, 'fill')
     fill(col2)
@@ -309,11 +347,34 @@ var snakeMenu = {
 }
 
 // General Menu Functions
-var currentMenu, backCol, textCol
+var currentMenu = 'main'
+var backCol = 'white'
+var textCol = ['black', 'grey']
+
 function createStartMenu() {
-  currentMenu = 'main'
-  backCol = 'white'
-  textCol = ['black', 'grey']
   mainMenu.draw(textCol[1], textCol[0])
 }
 
+function createPlayAgainMenu() {
+  currentMenu = 'main2'
+  mainMenu2.draw(textCol[1], textCol[0])
+}
+
+// Dark Mode
+var theme = 'light'
+function lightToDark() {
+  theme = 'dark'
+  document.querySelector('link').setAttribute('href', 'css/dark.css')
+  textCol = ['white', 'darkgrey']
+  backCol = 'grey'
+  
+  localStorage.setItem('theme', 'dark')
+}
+
+function darkToLight() {
+  theme = 'light'
+  document.querySelector('link').setAttribute('href', 'css/light.css')
+  textCol[0] = 'black'
+  backCol = 'white'
+  localStorage.setItem('theme', 'light')
+}
